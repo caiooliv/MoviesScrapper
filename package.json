@@ -1,0 +1,12 @@
+{
+  "name": "moviescrap",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Caio Oliveira de Moraes <caiooliv97@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/translate": "^5.1.0",
+    "dotenv": "^8.2.0",
+    "puppeteer": "^2.0.0"
+  }
+}
