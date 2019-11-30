@@ -1,30 +1,35 @@
-
 'use strict';
 require('dotenv/config')
+const fs = require('fs')
 
-function main(
-  projectId = `${process.env.PROJECT_ID}` // Your GCP Project Id
-) {
+    const projectId = `${process.env.PROJECT_ID}` // Your GCP Project Id
+
     const {Translate} = require('@google-cloud/translate').v2;
 
-  // Instantiates a client
-  const translate = new Translate({projectId});
+    const translate = new Translate({projectId});
 
-  async function quickStart() {
-    // The text to translate
-    const text = 'Hello, world!';
+    var rawdata = fs.readFileSync('movies.json');
+    var movie = JSON.parse(rawdata);
 
-    // The target language
-    const target = 'pt-br';
 
-    // Translates some text into Russian
-    const [translation] = await translate.translate(text, target);
-    console.log(`Text: ${text}`);
-    console.log(`Translation: ${translation}`);
-  }
-  console.log("teste")
-  quickStart();
-  // [END translate_quickstart]
-}
+    async function updateJson() {
 
-main()
+        for(let i = 0; i < 99;i++){
+            var gener = movie[i].genero;
+            var description = movie[i].descricao
+            const target = 'pt-br';
+            const [generTranslation] = await translate.translate(gener, target);
+            const [descriptionTranslation] = await translate.translate(description, target);
+            movie[i].genero = generTranslation;
+            movie[i].descricao = descriptionTranslation;
+
+        }
+        movie = JSON.stringify(movie)
+
+        fs.writeFile("movies.json", movie, function(err, result) {
+            if (err) console.log("error", err);
+        });
+
+    }
+updateJson();
+
